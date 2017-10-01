@@ -17,4 +17,25 @@ plt.plot(x_data, y_data, 'ro', label='Dots')
 plt.legend()
 plt.show()
 
-# model TensorFlow
+# TensorFlow
+#   data
+import tensorflow as tf
+w = tf.Variable(tf.random_uniform([1], -1.0, 1.0))
+b = tf.Variable(tf.zeros([1]))
+y = w * x_data + b
+
+#   cost function
+loss = tf.reduce_mean(tf.square(y - y_data))
+optimizer = tf.train.GradientDescentOptimizer(0.5)
+train = optimizer.minimize(loss)
+
+#   train
+init = tf.global_variables_initializer()
+sess = tf.Session()
+sess.run(init)
+for step in range(8):
+    sess.run(train)
+    plt.plot(x_data, y_data, 'ro', label='Dots')
+    plt.plot(x_data, sess.run(w) * x_data + sess.run(b))
+    plt.show()
+
